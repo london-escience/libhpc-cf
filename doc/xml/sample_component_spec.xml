@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components xmlns="http://www.imperial.ac.uk/lesc/projects/libhpc/component" componentGroup="bio">
+    <component>
+        <id>bwa.sampe</id>
+        <description>BWA Paired Alignment</description>
+        <wrapperFunction>libhpc.wrapper.bio.bwa.sampe</wrapperFunction>
+        <parameters>
+            <!-- Input params -->
+            <inputParam>
+                <paramId>ref_genome_param</paramId>
+                <paramType>string</paramType>
+                <paramDirection>input</paramDirection>
+                <!-- <ignoreParam/>  -->
+            </inputParam>
+            <inputParam>
+                <paramId>short_read_indexes_param</paramId>
+                <paramType>list</paramType>
+                <paramDirection>input</paramDirection>
+                <!-- <ignoreParam/>  -->
+            </inputParam>
+            <inputParam>
+                <paramId>short_read_file_param</paramId>
+                <paramType>list</paramType>
+                <paramDirection>input</paramDirection>
+                <!-- <ignoreParam/>  -->
+            </inputParam>
+            <inputParam>
+                <paramId>sam_output_file</paramId>
+                <paramType>string</paramType>
+                <paramDirection>output</paramDirection>
+                <paramOptional/>
+                <!-- <ignoreParam/>  -->
+            </inputParam>
+            <!-- Output params -->
+            <outputParam>
+                <paramId>bwa_sampe_status</paramId>
+                <paramType>int</paramType>
+                <paramDirection>output</paramDirection>
+                <ignoreParam/>
+            </outputParam>
+            <curryParamsPosition>pre</curryParamsPosition>
+        </parameters>
+        <wrapper>
+            <!-- <wrapperFunctionFilePath></wrapperFunctionFilePath> -->
+            <generateSimpleWrapper>
+                <executable>/usr/local/bwa/bin/bwa_exec</executable>
+                <executableParam>
+                    <paramSwitch></paramSwitch>
+                    <paramValue>sampe</paramValue>
+                </executableParam>
+                <executableParam>
+                    <paramSwitch>-f</paramSwitch>
+                    <paramValue>inputParam::sam_output_file</paramValue>
+                </executableParam>
+                <executableParam>
+                    <paramSwitch></paramSwitch>
+                    <paramValue>inputParam::ref_genome_param</paramValue>
+                </executableParam>
+                <executableParam>
+                    <paramSwitch></paramSwitch>
+                    <paramValue>inputParam::short_read_indexes_param::0</paramValue>
+                </executableParam>
+                <executableParam>
+                    <paramSwitch></paramSwitch>
+                    <paramValue>inputParam::short_read_indexes_param::1</paramValue>
+                </executableParam>
+                <executableParam>
+                    <paramSwitch></paramSwitch>
+                    <paramValue>inputParam::short_read_file_param::0</paramValue>
+                </executableParam>
+                <executableParam>
+                    <paramSwitch></paramSwitch>
+                    <paramValue>inputParam::short_read_file_param::1</paramValue>
+                </executableParam>
+                <executableResult>
+                    <paramValue>outputParam::bwa_sampe_status</paramValue>
+                </executableResult>
+            </generateSimpleWrapper>
+        </wrapper>
+    </component>
+</components>
