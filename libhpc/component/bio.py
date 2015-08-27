@@ -39,7 +39,7 @@
 #   - libhpc Stage II: A Long-term Solution for the Usability, Maintainability
 #     and Sustainability of HPC Software (EP/K038788/1).
 from libhpc.cf.params import Parameter
-from libhpc.cf.funcs import Function
+from libhpc.cf.component import Component
 
 # COMPONENT PARAMETER DEFINITIONS
 
@@ -142,28 +142,28 @@ gatk_print_reads_status = Parameter('gatk_print_reads_status', 'string', 'output
 
 # COMPONENT DEFINITIONS
     
-fastq_split = Function('fastq.splitter', 'Paired FASTQ File Splitter', 'libhpc.wrapper.bio.fastqsplitter.split_fastq', [fastq_split_input, fastq_split_output1, fastq_split_output2], [])
+fastq_split = Component('fastq.splitter', 'Paired FASTQ File Splitter', 'libhpc.wrapper.bio.fastqsplitter.split_fastq', [fastq_split_input, fastq_split_output1, fastq_split_output2], [])
 
-#bwa_index = Function('bwa.index', 'BWA Index', 'bwa.index', [bwa_index_param1], [bwa_index_result])
-bwa_index = Function('bwa.index', 'BWA Index', 'libhpc.wrapper.bio.bwa.index', [bwa_index_param1, bwa_index_output_file], [bwa_index_result])
-bwa_aln = Function('bwa.align', 'BWA Initial Alignment', 'libhpc.wrapper.bio.bwa.align', [bwa_aln_ref_genome, bwa_aln_short_read, bwa_aln_output_file], [bwa_aln_result])
-bwa_sampe = Function('bwa.sampe', 'BWA Paired Alignment', 'libhpc.wrapper.bio.bwa.sampe', [bwa_sampe_param1, bwa_sampe_param2, bwa_sampe_param3, bwa_sampe_output_file], [bwa_sampe_result], 'pre')
+#bwa_index = Component('bwa.index', 'BWA Index', 'bwa.index', [bwa_index_param1], [bwa_index_result])
+bwa_index = Component('bwa.index', 'BWA Index', 'libhpc.wrapper.bio.bwa.index', [bwa_index_param1, bwa_index_output_file], [bwa_index_result])
+bwa_aln = Component('bwa.align', 'BWA Initial Alignment', 'libhpc.wrapper.bio.bwa.align', [bwa_aln_ref_genome, bwa_aln_short_read, bwa_aln_output_file], [bwa_aln_result])
+bwa_sampe = Component('bwa.sampe', 'BWA Paired Alignment', 'libhpc.wrapper.bio.bwa.sampe', [bwa_sampe_param1, bwa_sampe_param2, bwa_sampe_param3, bwa_sampe_output_file], [bwa_sampe_result], 'pre')
     
-samtools_import = Function('samtools.import', 'SAMtools Import', 'libhpc.wrapper.bio.samtools.import_sam', [samtools_import_param1, samtools_import_param2, samtools_import_output], [samtools_import_result], 'pre')
-samtools_sort = Function('samtools.sort', 'SAMtools Sort', 'libhpc.wrapper.bio.samtools.sort', [samtools_sort_baminput, samtools_sort_sortedoutput], [samtools_import_result])
-samtools_index = Function('samtools.index', 'SAMtools Index', 'libhpc.wrapper.bio.samtools.index', [samtools_index_input, samtools_index_output], [samtools_index_result])
-samtools_faidx = Function('samtools.faidx', 'SAMtools faidx', 'libhpc.wrapper.bio.samtools.faidx', [samtools_faidx_input, samtools_faidx_output], [samtools_faidx_result])
-samtools_mpileup = Function('samtools.mpileup', 'SAMtools mpileup', 'libhpc.wrapper.bio.samtools.mpileup', [samtools_mpileup_input, samtools_mpileup_output], [samtools_mpileup_result])
-samtools_bcf2vcf = Function('samtools.bcf2vcf', 'SAMtools BCF to VCF conversion', 'libhpc.wrapper.bio.samtools.bcf2vcf', [samtools_bcf2vcf_input, samtools_bcf2vcf_output], [samtools_bcf2vcf_result])
+samtools_import = Component('samtools.import', 'SAMtools Import', 'libhpc.wrapper.bio.samtools.import_sam', [samtools_import_param1, samtools_import_param2, samtools_import_output], [samtools_import_result], 'pre')
+samtools_sort = Component('samtools.sort', 'SAMtools Sort', 'libhpc.wrapper.bio.samtools.sort', [samtools_sort_baminput, samtools_sort_sortedoutput], [samtools_import_result])
+samtools_index = Component('samtools.index', 'SAMtools Index', 'libhpc.wrapper.bio.samtools.index', [samtools_index_input, samtools_index_output], [samtools_index_result])
+samtools_faidx = Component('samtools.faidx', 'SAMtools faidx', 'libhpc.wrapper.bio.samtools.faidx', [samtools_faidx_input, samtools_faidx_output], [samtools_faidx_result])
+samtools_mpileup = Component('samtools.mpileup', 'SAMtools mpileup', 'libhpc.wrapper.bio.samtools.mpileup', [samtools_mpileup_input, samtools_mpileup_output], [samtools_mpileup_result])
+samtools_bcf2vcf = Component('samtools.bcf2vcf', 'SAMtools BCF to VCF conversion', 'libhpc.wrapper.bio.samtools.bcf2vcf', [samtools_bcf2vcf_input, samtools_bcf2vcf_output], [samtools_bcf2vcf_result])
 
-picard_add_read_groups = Function('picard.add_read_groups', 'Picard - Add Read Groups', 'libhpc.wrapper.bio.picard.add_read_groups', [picard_add_read_groups_baminput, picard_add_read_groups_rgidinput, picard_add_read_groups_rglbinput, picard_add_read_groups_rgplinput, picard_add_read_groups_rgpuinput, picard_add_read_groups_rgsminput], [picard_add_read_groups_output]) # , picard_add_read_groups_result removed from return values    
-picard_merge_sam = Function('picard.merge_sam', 'Picard - Merge SAM/BAM files', 'libhpc.wrapper.bio.picard.merge_sam', [picard_merge_sam_input], [picard_merge_sam_output])
-picard_remove_duplicates = Function('picard.remove_duplicates', 'Picard - Remove Duplicates', 'libhpc.wrapper.bio.picard.remove_duplicates', [picard_remove_duplicates_input, picard_remove_duplicates_output, picard_remove_duplicates_metrics], [picard_remove_duplicates_result])
-picard_create_dictionary = Function('picard.create_dictionary', 'Picard - Create Dictionary', 'libhpc.wrapper.bio.picard.create_dictionary', [picard_create_dictionary_ref_input, picard_create_dictionary_output], [picard_create_dictionary_status])
-picard_build_bam_index = Function('picard.build_bam_index', 'Picard - Build BAM Index', 'libhpc.wrapper.bio.picard.build_bam_index', [picard_build_bam_index_input, picard_build_bam_index_output], [picard_build_bam_index_result])
-picard_check_reference = Function('picard.check_reference', 'Check reference genome extension', 'libhpc.wrapper.bio.picard.check_rename_reference', [picard_check_reference_input, picard_check_reference_output], [])
+picard_add_read_groups = Component('picard.add_read_groups', 'Picard - Add Read Groups', 'libhpc.wrapper.bio.picard.add_read_groups', [picard_add_read_groups_baminput, picard_add_read_groups_rgidinput, picard_add_read_groups_rglbinput, picard_add_read_groups_rgplinput, picard_add_read_groups_rgpuinput, picard_add_read_groups_rgsminput], [picard_add_read_groups_output]) # , picard_add_read_groups_result removed from return values    
+picard_merge_sam = Component('picard.merge_sam', 'Picard - Merge SAM/BAM files', 'libhpc.wrapper.bio.picard.merge_sam', [picard_merge_sam_input], [picard_merge_sam_output])
+picard_remove_duplicates = Component('picard.remove_duplicates', 'Picard - Remove Duplicates', 'libhpc.wrapper.bio.picard.remove_duplicates', [picard_remove_duplicates_input, picard_remove_duplicates_output, picard_remove_duplicates_metrics], [picard_remove_duplicates_result])
+picard_create_dictionary = Component('picard.create_dictionary', 'Picard - Create Dictionary', 'libhpc.wrapper.bio.picard.create_dictionary', [picard_create_dictionary_ref_input, picard_create_dictionary_output], [picard_create_dictionary_status])
+picard_build_bam_index = Component('picard.build_bam_index', 'Picard - Build BAM Index', 'libhpc.wrapper.bio.picard.build_bam_index', [picard_build_bam_index_input, picard_build_bam_index_output], [picard_build_bam_index_result])
+picard_check_reference = Component('picard.check_reference', 'Check reference genome extension', 'libhpc.wrapper.bio.picard.check_rename_reference', [picard_check_reference_input, picard_check_reference_output], [])
 
-gatk_realigner_targets = Function('gatk.realigner_targets', 'Generate realigner targets for indel processing', 'libhpc.wrapper.bio.gatk.create_realigner_targets', [gatk_indel_targets_ref_input, gatk_indel_targets_bam_input, gatk_indel_targets_output], [gatk_indel_targets_status])
-gatk_indel_realigner = Function('gatk.indel_realigner', 'Realign BAM based on indels', 'libhpc.wrapper.bio.gatk.indel_realigner', [gatk_indel_realigner_ref_input, gatk_indel_realigner_bam_input, gatk_indel_realigner_interval_input, gatk_indel_realigner_output], [gatk_indel_realigner_status])    
-gatk_base_recalibrator = Function('gatk.base_recalibrator', 'GATK Base Recalibrator', 'libhpc.wrapper.bio.gatk.base_recalibrator', [gatk_base_recal_ref_genome, gatk_base_recal_bam_input, gatk_base_recal_known_sites, gatk_base_recal_output], [gatk_base_recal_status], 'pre')
-gatk_print_reads = Function('gatk.print_reads', 'GATK Print Reads', 'libhpc.wrapper.bio.gatk.print_reads', [gatk_print_reads_ref_genome, gatk_print_reads_bam_input, gatk_print_reads_recal_table, gatk_print_reads_output], [gatk_print_reads_status], 'pre')
+gatk_realigner_targets = Component('gatk.realigner_targets', 'Generate realigner targets for indel processing', 'libhpc.wrapper.bio.gatk.create_realigner_targets', [gatk_indel_targets_ref_input, gatk_indel_targets_bam_input, gatk_indel_targets_output], [gatk_indel_targets_status])
+gatk_indel_realigner = Component('gatk.indel_realigner', 'Realign BAM based on indels', 'libhpc.wrapper.bio.gatk.indel_realigner', [gatk_indel_realigner_ref_input, gatk_indel_realigner_bam_input, gatk_indel_realigner_interval_input, gatk_indel_realigner_output], [gatk_indel_realigner_status])    
+gatk_base_recalibrator = Component('gatk.base_recalibrator', 'GATK Base Recalibrator', 'libhpc.wrapper.bio.gatk.base_recalibrator', [gatk_base_recal_ref_genome, gatk_base_recal_bam_input, gatk_base_recal_known_sites, gatk_base_recal_output], [gatk_base_recal_status], 'pre')
+gatk_print_reads = Component('gatk.print_reads', 'GATK Print Reads', 'libhpc.wrapper.bio.gatk.print_reads', [gatk_print_reads_ref_genome, gatk_print_reads_bam_input, gatk_print_reads_recal_table, gatk_print_reads_output], [gatk_print_reads_status], 'pre')

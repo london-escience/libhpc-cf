@@ -47,7 +47,7 @@ import threading
 
 import types
 from collections import Iterable
-from funcs import Function
+from component import Component
 import Queue
 
 PAR_TASK_IDENTIFIER_INT = '<<PAR_TASK_ID, int>>'
@@ -62,7 +62,7 @@ PAR_TASK_IDENTIFIER_STRING = '<<PAR_TASK_ID, string>>'
 # that contains metadata describing the parameter.
 # PIPE returns a function that will enact the requested PIPE operation
 # when called. The elements of the function_list parameter may be 
-# instances of cffuncs.Function or may be functions representing other
+# instances of component.Component or may be functions representing other
 # coordination forms.
 #
 # PIPE is passed a list of functions and the initial parameter list.
@@ -78,15 +78,15 @@ def PIPE(function_list, initial_param_list = None):
     
     def PIPE_implementation(initial_param_list = initial_param_list, par_task_id = None):
         # Work through the function list in reverse
-        # Elements may be instances of cffuncs.Function or may be
+        # Elements may be instances of component.Component or may be
         # functions resulting from the pre-evaluation of nested
         # coordination forms.
         count = 0
         output = None
         
         for func_element in reversed(function_list):
-            # An element of the PIPE may be an instance of cffuncs.Function
-            # or a tuple containing an instance of cffuncs.Function as the
+            # An element of the PIPE may be an instance of component.Component
+            # or a tuple containing an instance of component.Component as the
             # first element followed by parameters as the subsequent elements.
             
             func = None
@@ -149,9 +149,9 @@ def PIPE(function_list, initial_param_list = None):
             
             print 'PIPE: Complete input to function ' + str(count) + ' <' + str(output) + '>\n'
             
-            # Check if func is an instance of cffuncs.Function or a function
+            # Check if func is an instance of component.Component or a function
             # resulting from the pre-evaluation of another coordination forms expression
-            if isinstance(func, Function):
+            if isinstance(func, Component):
                 # if we reach this code, the current element of the PIPE is a
                 # standard function that will be called via its metadata object.
                 # If we're at element 0, the input may be coming from some
@@ -310,9 +310,9 @@ def PAR(function_list, param_list=None):
             print 'Tuple of params to call thread function with: ' + str(tuple(params))
             
             
-            # func may be an instance of the Function class or another (nested)
+            # func may be an instance of the Component class or another (nested)
             # co-ordination form.
-            if isinstance(func, Function):
+            if isinstance(func, Component):
                 print 'About to run function <' + func.get_code() + '>, additional params provided <' + str(params) + '>...\n'
                 # Create a thread for this function
                 thread_list.append(threading.Thread(target=func.run, args=[tuple(params), (output, count)]))
@@ -387,8 +387,8 @@ def BYPASS(func, params=None, par_task_id = None):
     
         print 'Handling function ' + str(func)
        
-        # The function passed to BYPASS may be an instance of cffuncs.Function
-        # or a tuple containing an instance of cffuncs.Function as the
+        # The function passed to BYPASS may be an instance of component.Component
+        # or a tuple containing an instance of component.Component as the
         # first element followed by parameters as the subsequent elements.
         
         new_params = None
@@ -433,9 +433,9 @@ def BYPASS(func, params=None, par_task_id = None):
         
         print 'BYPASS: Complete input to function <' + str(output) + '>\n'
         
-        # Check if func is an instance of cffuncs.Function or a function
+        # Check if func is an instance of component.Component or a function
         # resulting from the pre-evaluation of another coordination forms expression
-        if isinstance(func, Function):
+        if isinstance(func, Component):
             # if we reach this code, the cfunction provided to BYPASS is a
             # standard function that will be called via its metadata object.
             # The input may be coming from some
@@ -608,8 +608,8 @@ def APPEND(func, params=None):
     
         print 'Handling function ' + str(func)
        
-        # The function passed to BYPASS may be an instance of cffuncs.Function
-        # or a tuple containing an instance of cffuncs.Function as the
+        # The function passed to BYPASS may be an instance of component.Component
+        # or a tuple containing an instance of component.Component as the
         # first element followed by parameters as the subsequent elements.
         # Alternatively it may a nested coordination form - an instance of 
         # types.FunctionType
@@ -645,9 +645,9 @@ def APPEND(func, params=None):
         
         print 'APPEND: Complete input to function <' + str(input) + '>\n'
         
-        # Check if func is an instance of cffuncs.Function or a function
+        # Check if func is an instance of component.Component or a function
         # resulting from the pre-evaluation of another coordination forms expression
-        if isinstance(func, Function):
+        if isinstance(func, Component):
             # if we reach this code, the cfunction provided to BYPASS is a
             # standard function that will be called via its metadata object.
             # The input may be coming from some
@@ -684,7 +684,7 @@ def APPEND(func, params=None):
             raise ValueError('APPEND: The function provided is of an unknown type. Unable to evaluate this APPEND expression...')
 
         
-        if isinstance(func, Function):
+        if isinstance(func, Component):
             print 'APPEND: Handled function <' + str(func.get_code()) + '>. Combining input/output list.\n'
         elif isinstance(func, types.FunctionType):
             print 'APPEND: Handled function <' + func.__name__ + '>. Combining input/output list.\n'
